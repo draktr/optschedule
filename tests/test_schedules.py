@@ -1,11 +1,11 @@
 import pytest
-from schedules import Schedules
+from optschedule import Schedule
 import numpy as np
 
 
 @pytest.fixture
 def schedule():
-    schedule = Schedules(10)
+    schedule = Schedule(10)
     return schedule
 
 
