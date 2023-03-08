@@ -1,5 +1,5 @@
 """
-The ``schedules`` module houses ``Schedules`` class that produces sequences used in
+The ``schedule`` module houses ``Schedule`` class that produces sequences used in
 gradient descent and other optimizers for variable learning rates and other hyperparameters
 
 :raises ValueError: Error if there is more or less than exactly one more element of `values` that `boundaries`
@@ -10,9 +10,9 @@ gradient descent and other optimizers for variable learning rates and other hype
 import numpy as np
 
 
-class Schedules():
+class Schedule:
     """
-    Schedules class.
+    Schedule class.
 
     Instance variables:
 
@@ -20,10 +20,9 @@ class Schedules():
     - ``steps`` - ndarray
     """
 
-    def __init__(self,
-                 n_steps) -> None:
+    def __init__(self, n_steps) -> None:
         """
-        Initializes Schedules Object.
+        Initializes Schedule Object.
 
         :param n_steps: Number of decay steps. Must be equal to the number of epochs of the algorithm
         :type n_steps: int
@@ -32,10 +31,7 @@ class Schedules():
         self.n_steps = n_steps
         self.steps = np.linspace(0, n_steps, n_steps)
 
-    def exponential_decay(self,
-                          initial_value,
-                          decay_rate,
-                          staircase = False):
+    def exponential_decay(self, initial_value, decay_rate, staircase=False):
         """
         Sequence with exponential decay.
 
@@ -50,15 +46,17 @@ class Schedules():
         """
 
         if staircase is True:
-            sequence = initial_value*np.power(decay_rate, np.floor(np.divide(self.steps, self.n_steps)))
+            sequence = initial_value * np.power(
+                decay_rate, np.floor(np.divide(self.steps, self.n_steps))
+            )
         else:
-            sequence = initial_value*np.power(decay_rate, np.divide(self.steps, self.n_steps))
+            sequence = initial_value * np.power(
+                decay_rate, np.divide(self.steps, self.n_steps)
+            )
 
         return sequence
 
-    def cosine_decay(self,
-                     initial_value,
-                     alpha):
+    def cosine_decay(self, initial_value, alpha):
         """
         Sequence with cosine decay.
 
@@ -71,17 +69,16 @@ class Schedules():
         """
 
         steps = np.minimum(self.steps, self.n_steps)
-        cosine_decay = 0.5 * (1 + np.cos(np.multiply(np.pi, np.divide(steps, self.n_steps))))
+        cosine_decay = 0.5 * (
+            1 + np.cos(np.multiply(np.pi, np.divide(steps, self.n_steps)))
+        )
         decayed = (1 - alpha) * cosine_decay + alpha
 
         sequence = initial_value * decayed
 
         return sequence
 
-    def inverse_time_decay(self,
-                           initial_value,
-                           decay_rate,
-                           staircase = False):
+    def inverse_time_decay(self, initial_value, decay_rate, staircase=False):
         """
         Sequence with inverse time decay
 
@@ -96,19 +93,24 @@ class Schedules():
         """
 
         if staircase is True:
-            sequence = np.divide(initial_value,
-                                      (1 + np.multiply(decay_rate, np.floor(np.divide(self.steps, self.n_steps)))))
+            sequence = np.divide(
+                initial_value,
+                (
+                    1
+                    + np.multiply(
+                        decay_rate, np.floor(np.divide(self.steps, self.n_steps))
+                    )
+                ),
+            )
         else:
-            sequence = np.divide(initial_value,
-                                      (1 + np.multiply(decay_rate, np.divide(self.steps, self.n_steps))))
+            sequence = np.divide(
+                initial_value,
+                (1 + np.multiply(decay_rate, np.divide(self.steps, self.n_steps))),
+            )
 
         return sequence
 
-    def polynomial_decay(self,
-                         initial_value,
-                         end_value,
-                         power,
-                         cycle = False):
+    def polynomial_decay(self, initial_value, end_value, power, cycle=False):
         """
         Sequence with polynomial decay.
 
@@ -125,21 +127,29 @@ class Schedules():
         """
 
         if cycle is True:
-            n_steps = np.multiply(self.n_steps, np.ceil(np.divide(self.steps, self.n_steps)))
-            sequence = np.multiply((initial_value - end_value),
-                                         (np.power(1 - np.divide(self.steps, n_steps), power)
-                                         )) + end_value
+            n_steps = np.multiply(
+                self.n_steps, np.ceil(np.divide(self.steps, self.n_steps))
+            )
+            sequence = (
+                np.multiply(
+                    (initial_value - end_value),
+                    (np.power(1 - np.divide(self.steps, n_steps), power)),
+                )
+                + end_value
+            )
         else:
             steps = np.minimum(self.steps, self.n_steps)
-            sequence = np.multiply((initial_value - end_value),
-                                         (np.power(1 - np.divide(steps, self.n_steps), power)
-                                         )) + end_value
+            sequence = (
+                np.multiply(
+                    (initial_value - end_value),
+                    (np.power(1 - np.divide(steps, self.n_steps), power)),
+                )
+                + end_value
+            )
 
         return sequence
 
-    def piecewise_constant_decay(self,
-                                 boundaries,
-                                 values):
+    def piecewise_constant_decay(self, boundaries, values):
         """
         Sequence with piecewise constant decay.
 
@@ -152,22 +162,24 @@ class Schedules():
         :rtype: ndarray
         """
 
-        if len(boundaries)+1 != len(values):
-            raise ValueError("There should be only one value for each piece of array, \
-                              i.e. there should be exactly one more element of `values` that `boundaries`")
+        if len(boundaries) + 1 != len(values):
+            raise ValueError(
+                "There should be only one value for each piece of array, \
+                              i.e. there should be exactly one more element of `values` that `boundaries`"
+            )
 
         boundaries = np.append(0, boundaries)
         boundaries = np.append(boundaries, self.n_steps)
 
         sequence = np.zeros(self.n_steps)
         for value in range(len(values)):
-            sequence[boundaries[value]:boundaries[value+1]] = np.full(boundaries[value+1]-boundaries[value],
-                                                                            values[value])
+            sequence[boundaries[value] : boundaries[value + 1]] = np.full(
+                boundaries[value + 1] - boundaries[value], values[value]
+            )
 
         return sequence
 
-    def constant(self,
-                 value):
+    def constant(self, value):
         """
         Constant sequence
 
