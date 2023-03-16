@@ -1,7 +1,7 @@
 """
 OptSchedule
 
-Flexible parameter scheduler that can be implemented with proprietary and open source optimizers.
+Flexible parameter scheduler that can be implemented with proprietary and open source optimizers and algorithms.
 """
 
 from optschedule.schedule import Schedule
