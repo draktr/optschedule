@@ -241,3 +241,55 @@ class Schedule:
             sequence[i + 1] = np.maximum(initial_value - decay * i, minimum_value)
 
         return sequence
+
+    def time_decay(self, initial_value, decay_rate):
+        """
+        Sequence with time-based decay given by
+
+        .. math::
+
+            value = \frac{prev_value}{1+decay_rate \times i}
+
+        where `prev_value` is the previous value in the sequence and `decay_rate` is the decay rate parameter.
+
+        :param initial_value: Initial value of the sequence
+        :type initial_value: float
+        :param decay_rate: Decay rate
+        :type decay_rate: float
+        :return: Sequence of values with each element being a value (e.g. learning rate or difference) for each epoch
+        :rtype: ndarray
+        """
+
+        sequence = np.zeros(self.n_steps)
+        sequence[0] = initial_value
+        for i in range(self.n_steps - 1):
+            sequence[i + 1] = sequence[i] / (1 + decay_rate * i)
+
+        return sequence
+
+    def step_decay(self, initial_value, drop, i_drop):
+        """
+        Sequence with step decay given by
+
+        .. math::
+
+            value = initial_value \times drop^{\lfloor \frac{i}{i_drop} \rfloor}
+
+        where `i` is the current value in the sequence.
+
+        :param initial_value: Initial value of the sequence
+        :type initial_value: float
+        :param drop: Drop size
+        :type drop: float
+        :param i_drop: Drop is performed every `i_drop` values
+        :type i_drop: int
+        :return: Sequence of values with each element being a value (e.g. learning rate or difference) for each epoch
+        :rtype: ndarray
+        """
+
+        sequence = np.zeros(self.n_steps)
+        sequence[0] = initial_value
+        for i in range(self.n_steps - 1):
+            sequence[i + 1] = initial_value * np.power(drop, np.floor((1 + i) / i_drop))
+
+        return sequence
