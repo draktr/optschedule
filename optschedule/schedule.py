@@ -1,6 +1,5 @@
 """
-The ``schedule`` module houses ``Schedule`` class that produces sequences used in
-gradient descent and other optimizers for variable learning rates and other hyperparameters
+The ``schedule`` module houses ``Schedule`` class that produces sequences that can be implemented with proprietary and open source optimizers and algorithms.
 
 :raises ValueError: Error if there is more or less than exactly one more element of `values` that `boundaries`
 :return: Sequence of values with each element being a value (e.g. learning rate or difference) for each epoch
@@ -190,5 +189,55 @@ class Schedule:
         """
 
         sequence = np.full(len(self.steps), value)
+
+        return sequence
+
+    def geometric_decay(self, initial_value, decay, minimum_value):
+        """
+        Sequence with geometric decay given by
+
+        .. math::
+
+            value = \max(initial_value \times decay^{i}, minimum_value)
+
+        :param initial_value: Initial value of the sequence
+        :type initial_value: float
+        :param decay: Rate of geometric decay
+        :type decay: float
+        :param minimum_value: Minimum value of the sequence
+        :type minimum_value: float
+        :return: Sequence of values with each element being a value (e.g. learning rate or difference) for each epoch
+        :rtype: ndarray
+        """
+
+        sequence = np.zeros(self.n_steps)
+        sequence[0] = initial_value
+        for i in range(self.n_steps - 1):
+            sequence[i + 1] = np.maximum(initial_value * decay**i, minimum_value)
+
+        return sequence
+
+    def arithmetic_decay(self, initial_value, decay, minimum_value):
+        """
+        Sequence with arithmetic decay given by
+
+        .. math::
+
+            value = \max(initial_value - decay \times i, minimum_value)
+
+        :param initial_value: Initial value of the sequence
+        :type initial_value: float
+        :param decay: Rate of arithmetic decay
+        :type decay: float
+        :param minimum_value: Minimum value of the sequence
+        :type minimum_value: float
+        :return: Sequence of values with each element being a value (e.g. learning rate or difference) for each epoch
+        :rtype: ndarray
+        """
+
+        sequence = np.zeros(self.n_steps)
+        sequence[0] = initial_value
+        for i in range(self.n_steps - 1):
+            sequence[i + 1] = np.maximum(initial_value - decay * i, minimum_value)
 
         return sequence
