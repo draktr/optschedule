@@ -192,18 +192,18 @@ class Schedule:
 
         return sequence
 
-    def geometric_decay(self, initial_value, decay, minimum_value):
+    def geometric_decay(self, initial_value, decay_rate, minimum_value):
         """
         Sequence with geometric decay given by
 
         .. math::
 
-            value = \max(initial_value \times decay^{i}, minimum_value)
+            value = \max(initial_value \times decay_rate^{i}, minimum_value)
 
         :param initial_value: Initial value of the sequence
         :type initial_value: float
-        :param decay: Rate of geometric decay
-        :type decay: float
+        :param decay_rate: Rate of geometric decay
+        :type decay_rate: float
         :param minimum_value: Minimum value of the sequence
         :type minimum_value: float
         :return: Sequence of values with each element being a value (e.g. learning rate or difference) for each epoch
@@ -213,22 +213,22 @@ class Schedule:
         sequence = np.zeros(self.n_steps)
         sequence[0] = initial_value
         for i in range(self.n_steps - 1):
-            sequence[i + 1] = np.maximum(initial_value * decay**i, minimum_value)
+            sequence[i + 1] = np.maximum(initial_value * decay_rate**i, minimum_value)
 
         return sequence
 
-    def arithmetic_decay(self, initial_value, decay, minimum_value):
+    def arithmetic_decay(self, initial_value, decay_rate, minimum_value):
         """
         Sequence with arithmetic decay given by
 
         .. math::
 
-            value = \max(initial_value - decay \times i, minimum_value)
+            value = \max(initial_value - decay_rate \times i, minimum_value)
 
         :param initial_value: Initial value of the sequence
         :type initial_value: float
-        :param decay: Rate of arithmetic decay
-        :type decay: float
+        :param decay_rate: Rate of arithmetic decay
+        :type decay_rate: float
         :param minimum_value: Minimum value of the sequence
         :type minimum_value: float
         :return: Sequence of values with each element being a value (e.g. learning rate or difference) for each epoch
@@ -238,7 +238,7 @@ class Schedule:
         sequence = np.zeros(self.n_steps)
         sequence[0] = initial_value
         for i in range(self.n_steps - 1):
-            sequence[i + 1] = np.maximum(initial_value - decay * i, minimum_value)
+            sequence[i + 1] = np.maximum(initial_value - decay_rate * i, minimum_value)
 
         return sequence
 
@@ -267,22 +267,22 @@ class Schedule:
 
         return sequence
 
-    def step_decay(self, initial_value, drop, i_drop):
+    def step_decay(self, initial_value, decay_value, decay_every):
         """
         Sequence with step decay given by
 
         .. math::
 
-            value = initial_value \times drop^{\lfloor \frac{i}{i_drop} \rfloor}
+            value = initial_value \times decay_value^{\lfloor \frac{i}{decay_every} \rfloor}
 
         where `i` is the current value in the sequence.
 
         :param initial_value: Initial value of the sequence
         :type initial_value: float
-        :param drop: Drop size
-        :type drop: float
-        :param i_drop: Drop is performed every `i_drop` values
-        :type i_drop: int
+        :param decay_value: Drop size
+        :type decay_value: float
+        :param decay_every: Drop is performed every `decay_every` values
+        :type decay_every: int
         :return: Sequence of values with each element being a value (e.g. learning rate or difference) for each epoch
         :rtype: ndarray
         """
@@ -290,6 +290,8 @@ class Schedule:
         sequence = np.zeros(self.n_steps)
         sequence[0] = initial_value
         for i in range(self.n_steps - 1):
-            sequence[i + 1] = initial_value * np.power(drop, np.floor((1 + i) / i_drop))
+            sequence[i + 1] = initial_value * np.power(
+                decay_value, np.floor((1 + i) / decay_every)
+            )
 
         return sequence
