@@ -152,3 +152,25 @@ def test_polynomial_cycle(schedule):
     )
 
     assert np.all(np.round(rates[1:], 4) == np.round(true_values[1:], 4))
+
+
+def test_geometric(schedule):
+    rates = schedule.geometric_decay(
+        initial_value=0.5, decay_rate=0.5, minimum_value=0.01
+    )
+
+    true_values = np.array(
+        [0.5, 0.5, 0.25, 0.125, 0.0625, 0.03125, 0.015625, 0.01, 0.01, 0.01]
+    )
+
+    assert np.all(np.round(rates, 5) == np.round(true_values, 5))
+
+
+def test_arithmetic(schedule):
+    rates = schedule.arithmetic_decay(
+        initial_value=0.5, decay_rate=0.5, minimum_value=0.01
+    )
+
+    true_values = np.array([0.5, 0.5, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01])
+
+    assert np.all(np.round(rates, 5) == np.round(true_values, 5))
