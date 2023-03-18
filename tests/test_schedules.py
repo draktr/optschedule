@@ -174,3 +174,34 @@ def test_arithmetic(schedule):
     true_values = np.array([0.5, 0.5, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01])
 
     assert np.all(np.round(rates, 5) == np.round(true_values, 5))
+
+
+def test_time_decay(schedule):
+    rates = schedule.time_decay(initial_value=0.1, decay_rate=0.1)
+
+    true_values = np.array(
+        [
+            0.1,
+            0.1,
+            0.09090909,
+            0.07575758,
+            0.05827506,
+            0.04162504,
+            0.02775003,
+            0.01734377,
+            0.01020222,
+            0.0056679,
+        ]
+    )
+
+    assert np.all(np.round(rates, 5) == np.round(true_values, 5))
+
+
+def test_step_decay(schedule):
+    rates = schedule.step_decay(initial_value=0.1, decay_value=0.5, decay_every=2)
+
+    true_values = np.array(
+        [0.1, 0.1, 0.05, 0.05, 0.025, 0.025, 0.0125, 0.0125, 0.00625, 0.00625]
+    )
+
+    assert np.all(np.round(rates, 5) == np.round(true_values, 5))
