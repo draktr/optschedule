@@ -1,8 +1,11 @@
 """
-The ``schedule`` module houses ``Schedule`` class that produces sequences that can be implemented with proprietary and open source optimizers and algorithms.
+The ``schedule`` module houses ``Schedule`` class that produces sequences that
+can be implemented with proprietary and open source optimizers and algorithms.
 
-:raises ValueError: Error if there is more or less than exactly one more element of `values` that `boundaries`
-:return: Sequence of values with each element being a value (e.g. learning rate or difference) for each epoch
+:raises ValueError: Error if there is more or less than exactly one more element
+                    of `values` that `boundaries`
+:return: Sequence of values with each element being a value
+         (e.g. learning rate or difference) for each epoch
 :rtype: ndarray
 """
 
@@ -10,20 +13,17 @@ import numpy as np
 
 
 class Schedule:
-    """
-    Schedule class.
-
-    Instance variables:
-
-    - ``n_steps`` - int
-    - ``steps`` - ndarray
-    """
-
     def __init__(self, n_steps) -> None:
         """
         Initializes Schedule Object.
 
-        :param n_steps: Number of decay steps. Must be equal to the number of epochs of the algorithm
+        Object properties:
+
+        - ``n_steps`` - number of steps
+        - ``steps`` - sequence of steps
+
+        :param n_steps: Number of decay steps. Must be equal to the number of
+                        epochs of the algorithm
         :type n_steps: int
         """
 
@@ -38,9 +38,11 @@ class Schedule:
         :type initial_value: float
         :param decay_rate: Rate of decay
         :type decay_rate: float
-        :param staircase: If True decay the sequence at discrete intervals, defaults to False
+        :param staircase: If True decay the sequence at discrete
+                          intervals, defaults to False
         :type staircase: bool, optional
-        :return: Sequence of values with each element being a value (e.g. learning rate or difference) for each epoch
+        :return: Sequence of values with each element being a value
+                 (e.g. learning rate or difference) for each epoch
         :rtype: ndarray
         """
 
@@ -63,7 +65,8 @@ class Schedule:
         :type initial_value: float
         :param alpha: Minimum sequence value as a fraction of initial_value
         :type alpha: float
-        :return: Sequence of values with each element being a value (e.g. learning rate or difference) for each epoch
+        :return: Sequence of values with each element being a value
+                 (e.g. learning rate or difference) for each epoch
         :rtype: ndarray
         """
 
@@ -85,9 +88,11 @@ class Schedule:
         :type initial_value: float
         :param decay_rate: Rate of decay
         :type decay_rate: float
-        :param staircase: If True decay the sequence at discrete intervals, defaults to False
+        :param staircase: If True decay the sequence at discrete
+                          intervals, defaults to False
         :type staircase: bool, optional
-        :return: Sequence of values with each element being a value (e.g. learning rate or difference) for each epoch
+        :return: Sequence of values with each element being a value
+                 (e.g. learning rate or difference) for each epoch
         :rtype: ndarray
         """
 
@@ -119,9 +124,11 @@ class Schedule:
         :type end_value: float
         :param power: The power of the polynomial
         :type power: float
-        :param cycle: Whether or not it should cycle beyond self.n_steps, defaults to False
+        :param cycle: Whether or not it should cycle beyond
+                      self.n_steps, defaults to False
         :type cycle: bool, optional
-        :return: Sequence of values with each element being a value (e.g. learning rate or difference) for each epoch
+        :return: Sequence of values with each element being a value
+                 (e.g. learning rate or difference) for each epoch
         :rtype: ndarray
         """
 
@@ -156,15 +163,17 @@ class Schedule:
         :type boundaries: list
         :param values: list of values in sequence in each of the pieces
         :type values: list
-        :raises ValueError: Error if there is more or less than exactly one more element of `values` that `boundaries`
-        :return: Sequence of values with each element being a value (e.g. learning rate or difference) for each epoch
+        :raises ValueError: Error if there is more or less than exactly
+                            one more element of `values` that `boundaries`
+        :return: Sequence of values with each element being a value
+                 (e.g. learning rate or difference) for each epoch
         :rtype: ndarray
         """
 
         if len(boundaries) + 1 != len(values):
             raise ValueError(
-                "There should be only one value for each piece of array, \
-                              i.e. there should be exactly one more element of `values` that `boundaries`"
+                "There should be only one value for each piece of array, i.e. \
+                there should be exactly one more element of `values` that `boundaries`"
             )
 
         boundaries = np.append(0, boundaries)
@@ -184,7 +193,8 @@ class Schedule:
 
         :param value: Value for each epoch
         :type value: float
-        :return: Sequence of values with each element being a value (e.g. learning rate or difference) for each epoch
+        :return: Sequence of values with each element being a value
+                 (e.g. learning rate or difference) for each epoch
         :rtype: ndarray
         """
 
@@ -197,8 +207,7 @@ class Schedule:
         Sequence with geometric decay given by
 
         .. math::
-
-            value = \max(initial_value \times decay_rate^{i}, minimum_value)
+            \\text{value} = \max(\\text{initial_value} \\times \\text{decay_rate}^{\\text{i}}, \\text{minimum_value})
 
         :param initial_value: Initial value of the sequence
         :type initial_value: float
@@ -206,7 +215,8 @@ class Schedule:
         :type decay_rate: float
         :param minimum_value: Minimum value of the sequence
         :type minimum_value: float
-        :return: Sequence of values with each element being a value (e.g. learning rate or difference) for each epoch
+        :return: Sequence of values with each element being a value
+                 (e.g. learning rate or difference) for each epoch
         :rtype: ndarray
         """
 
@@ -222,8 +232,7 @@ class Schedule:
         Sequence with arithmetic decay given by
 
         .. math::
-
-            value = \max(initial_value - decay_rate \times i, minimum_value)
+            \\text{value} = \max(\\text{initial_value} - \\text{decay_rate} \\times \\text{i}, \\text{minimum_value})
 
         :param initial_value: Initial value of the sequence
         :type initial_value: float
@@ -231,7 +240,8 @@ class Schedule:
         :type decay_rate: float
         :param minimum_value: Minimum value of the sequence
         :type minimum_value: float
-        :return: Sequence of values with each element being a value (e.g. learning rate or difference) for each epoch
+        :return: Sequence of values with each element being a value
+                 (e.g. learning rate or difference) for each epoch
         :rtype: ndarray
         """
 
@@ -247,16 +257,17 @@ class Schedule:
         Sequence with time-based decay given by
 
         .. math::
+            \\text{value} = \\frac{\\text{prev_value}}{1+\\text{decay_rate} \\times \\text{i}}
 
-            value = \frac{prev_value}{1+decay_rate \times i}
-
-        where `prev_value` is the previous value in the sequence and `decay_rate` is the decay rate parameter.
+        where `prev_value` is the previous value in the sequence and
+        `decay_rate` is the decay rate parameter.
 
         :param initial_value: Initial value of the sequence
         :type initial_value: float
         :param decay_rate: Decay rate
         :type decay_rate: float
-        :return: Sequence of values with each element being a value (e.g. learning rate or difference) for each epoch
+        :return: Sequence of values with each element being a value
+                 (e.g. learning rate or difference) for each epoch
         :rtype: ndarray
         """
 
@@ -272,8 +283,7 @@ class Schedule:
         Sequence with step decay given by
 
         .. math::
-
-            value = initial_value \times decay_value^{\lfloor \frac{i}{decay_every} \rfloor}
+            \\text{value} = \\text{initial_value} \\times \\text{decay_value}^{\lfloor \\frac{i}{\\text{decay_every}} \\rfloor}
 
         where `i` is the current value in the sequence.
 
@@ -283,7 +293,8 @@ class Schedule:
         :type decay_value: float
         :param decay_every: Drop is performed every `decay_every` values
         :type decay_every: int
-        :return: Sequence of values with each element being a value (e.g. learning rate or difference) for each epoch
+        :return: Sequence of values with each element being a value
+                 (e.g. learning rate or difference) for each epoch
         :rtype: ndarray
         """
 
