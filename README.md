@@ -29,6 +29,10 @@ python setup.py install
 * Polynomial decay
 * Piecewise constant decay
 * Constant schedule
+* Geometric decay
+* Arithmetic decay
+* Time decay
+* Step decay
 
 ## Advantages
 
