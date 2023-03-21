@@ -1,10 +1,7 @@
 from setuptools import setup
-import re
 
 with open("README.md", "r") as f:
     desc = f.read()
-    desc = desc.split("<!-- content -->")[-1]
-    desc = re.sub("<[^<]+?>", "", desc)
 
 setup(
     name="optschedule",
