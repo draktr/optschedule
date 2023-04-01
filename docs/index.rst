@@ -105,7 +105,7 @@ Any issues, bugs and improvement recommendations are very welcome.
    :maxdepth: 2
    :caption: Contents:
 
-   modules
+   optschedule
 
 
 Indices and tables
