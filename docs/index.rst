@@ -57,27 +57,30 @@ Advantages
 Usage
 -----
 
-Package contains ``Schedule`` class with methods that return an array of
-elements that is useful as a pre-defined parameter schedule
-(e.g. learning rate). The package can also be used for manually
-assigning varying weights to abstract particles. Overall, due to the
-general nature of the package a user might finds its own particular
-application.
+Package contains functions that return an array of elements that is useful
+as a pre-defined parameter schedule (e.g. learning rate). The package can
+also be used for manually assigning varying weights to abstract particles.
+Overall, due to the general nature of the package a user might finds its
+own particular application.
 
 Example: Variable Learning Rate in Gradient Descent Algorithm
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+In gradient descent algorithm, user might want to decrease the learning
+rate as the algorithm converges. This can improve the numerical stability
+of the algorithm, as well as decrease the approximation error.
+Simple implementation example is provided:
+
 .. code:: python
 
-   from optschedule import Schedule
+   import optschedule as sch
 
    # Function to be minimized (objective function) $ f(x) = (x+2)^2 $
    def foo(params):
        return (params[0] + 2) ** 2
 
    # Creating learning rate schedule
-   schedule = Schedule(1000)
-   learning_rate = schedule.exponential_decay(initial_value=0.1, decay_rate=0.5)
+   learning_rate = sch.exponential_decay(n_steps=1000, initial_value=0.1, decay_rate=0.5)
 
    # Array with objective value
    objective = np.zeros(1000)
@@ -106,6 +109,7 @@ Any issues, bugs and improvement recommendations are very welcome.
    :caption: Contents:
 
    optschedule
+   paradigm_shift
 
 
 Indices and tables
