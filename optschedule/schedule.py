@@ -1,6 +1,7 @@
 """
-The ``schedule`` module houses functions that produce sequences that
-can be implemented with proprietary and open source optimizers and algorithms.
+The ``schedule`` module houses functions that produce sequences that schedule
+parameters which can be implemented with proprietary and open source optimizers
+and algorithms.
 
 :raises ValueError: Error if there is more or less than exactly one more element
                     of `values` that `boundaries`
