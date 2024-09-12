@@ -1,2 +1,3 @@
 optschedule>=1.0.0
 numpy>=1.21.6
+sphinx_rtd_theme==1.2.0
