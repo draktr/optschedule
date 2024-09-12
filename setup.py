@@ -5,7 +5,7 @@ with open("README.md", "r") as f:
 
 setup(
     name="optschedule",
-    version="0.1.0",
+    version="1.0.0",
     description="Flexible parameter scheduler that can be implemented with proprietary and open source optimizers and algorithms.",
     long_description=desc,
     long_description_content_type="text/markdown",
