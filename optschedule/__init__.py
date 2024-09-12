@@ -5,6 +5,7 @@ Flexible parameter scheduler that can be implemented with proprietary and open s
 """
 
 from optschedule.schedule import *
+from optschedule.oop_schedule import Schedule
 
 __all__ = [s for s in dir() if not s.startswith("_")]
 

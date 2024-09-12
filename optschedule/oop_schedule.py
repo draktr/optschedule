@@ -1,4 +1,13 @@
 """
+DEPRECATION NOTICE:
+Schedule class and object-oriented approach in `optschedule` is deprecated.
+Functions and features will remain the same, just make sure to pass `n_steps`
+argument to functions individually. Please use scheduling functions directly
+(e.g. `from optschedule import exponential_decay`). For more details refer to
+'Paradigm Shift' section in the documentation.
+
+=============================================================================
+
 The ``schedule`` module houses ``Schedule`` class that produces sequences that
 can be implemented with proprietary and open source optimizers and algorithms.
 
@@ -10,6 +19,7 @@ can be implemented with proprietary and open source optimizers and algorithms.
 """
 
 import numpy as np
+import warnings
 
 
 class Schedule:
@@ -26,6 +36,16 @@ class Schedule:
                         epochs of the algorithm
         :type n_steps: int
         """
+
+        warnings.warn(
+            "Schedule class and object-oriented approach in `optschedule` is deprecated. \
+        Functions and features will remain the same, just make sure to pass `n_steps` \
+        argument to functions individually. Please use scheduling functions directly \
+        (e.g. `from optschedule import exponential_decay`). For more details refer to \
+        'Paradigm Shift' section in the documentation.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
 
         self.n_steps = n_steps
         self.steps = np.linspace(0, n_steps, n_steps)
@@ -45,6 +65,16 @@ class Schedule:
                  (e.g. learning rate or difference) for each epoch
         :rtype: ndarray
         """
+
+        warnings.warn(
+            "Schedule class and object-oriented approach in `optschedule` is deprecated. \
+        Functions and features will remain the same, just make sure to pass `n_steps` \
+        argument to functions individually. Please use scheduling functions directly \
+        (e.g. `from optschedule import exponential_decay`). For more details refer to \
+        'Paradigm Shift' section in the documentation.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
 
         if staircase is True:
             sequence = initial_value * np.power(
@@ -69,6 +99,16 @@ class Schedule:
                  (e.g. learning rate or difference) for each epoch
         :rtype: ndarray
         """
+
+        warnings.warn(
+            "Schedule class and object-oriented approach in `optschedule` is deprecated. \
+        Functions and features will remain the same, just make sure to pass `n_steps` \
+        argument to functions individually. Please use scheduling functions directly \
+        (e.g. `from optschedule import cosine_decay`). For more details refer to \
+        'Paradigm Shift' section in the documentation.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
 
         steps = np.minimum(self.steps, self.n_steps)
         cosine_decay = 0.5 * (
@@ -95,6 +135,16 @@ class Schedule:
                  (e.g. learning rate or difference) for each epoch
         :rtype: ndarray
         """
+
+        warnings.warn(
+            "Schedule class and object-oriented approach in `optschedule` is deprecated. \
+        Functions and features will remain the same, just make sure to pass `n_steps` \
+        argument to functions individually. Please use scheduling functions directly \
+        (e.g. `from optschedule import inverse_time_decay`). For more details refer to \
+        'Paradigm Shift' section in the documentation.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
 
         if staircase is True:
             sequence = np.divide(
@@ -131,6 +181,16 @@ class Schedule:
                  (e.g. learning rate or difference) for each epoch
         :rtype: ndarray
         """
+
+        warnings.warn(
+            "Schedule class and object-oriented approach in `optschedule` is deprecated. \
+        Functions and features will remain the same, just make sure to pass `n_steps` \
+        argument to functions individually. Please use scheduling functions directly \
+        (e.g. `from optschedule import polynomial_decay`). For more details refer to \
+        'Paradigm Shift' section in the documentation.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
 
         if cycle is True:
             n_steps = np.multiply(
@@ -170,6 +230,16 @@ class Schedule:
         :rtype: ndarray
         """
 
+        warnings.warn(
+            "Schedule class and object-oriented approach in `optschedule` is deprecated. \
+        Functions and features will remain the same, just make sure to pass `n_steps` \
+        argument to functions individually. Please use scheduling functions directly \
+        (e.g. `from optschedule import piecewise_constant_decay`). For more details refer to \
+        'Paradigm Shift' section in the documentation.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+
         if len(boundaries) + 1 != len(values):
             raise ValueError(
                 "There should be only one value for each piece of array, i.e. \
@@ -198,6 +268,16 @@ class Schedule:
         :rtype: ndarray
         """
 
+        warnings.warn(
+            "Schedule class and object-oriented approach in `optschedule` is deprecated. \
+        Functions and features will remain the same, just make sure to pass `n_steps` \
+        argument to functions individually. Please use scheduling functions directly \
+        (e.g. `from optschedule import constant`). For more details refer to \
+        'Paradigm Shift' section in the documentation.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+
         sequence = np.full(len(self.steps), value)
 
         return sequence
@@ -220,6 +300,15 @@ class Schedule:
         :rtype: ndarray
         """
 
+        warnings.warn(
+            "Schedule class and object-oriented approach in `optschedule` is deprecated. \
+        Functions and features will remain the same, just make sure to pass `n_steps` \
+        argument to functions individually. Please use scheduling functions directly \
+        (e.g. `from optschedule import geometric_decay`). For more details refer to \
+        'Paradigm Shift' section in the documentation.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
         sequence = np.zeros(self.n_steps)
         sequence[0] = initial_value
         for i in range(self.n_steps - 1):
@@ -244,6 +333,16 @@ class Schedule:
                  (e.g. learning rate or difference) for each epoch
         :rtype: ndarray
         """
+
+        warnings.warn(
+            "Schedule class and object-oriented approach in `optschedule` is deprecated. \
+        Functions and features will remain the same, just make sure to pass `n_steps` \
+        argument to functions individually. Please use scheduling functions directly \
+        (e.g. `from optschedule import arithmetic_decay`). For more details refer to \
+        'Paradigm Shift' section in the documentation.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
 
         sequence = np.zeros(self.n_steps)
         sequence[0] = initial_value
@@ -271,6 +370,16 @@ class Schedule:
         :rtype: ndarray
         """
 
+        warnings.warn(
+            "Schedule class and object-oriented approach in `optschedule` is deprecated. \
+        Functions and features will remain the same, just make sure to pass `n_steps` \
+        argument to functions individually. Please use scheduling functions directly \
+        (e.g. `from optschedule import time_decay`). For more details refer to \
+        'Paradigm Shift' section in the documentation.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+
         sequence = np.zeros(self.n_steps)
         sequence[0] = initial_value
         for i in range(self.n_steps - 1):
@@ -297,6 +406,16 @@ class Schedule:
                  (e.g. learning rate or difference) for each epoch
         :rtype: ndarray
         """
+
+        warnings.warn(
+            "Schedule class and object-oriented approach in `optschedule` is deprecated. \
+        Functions and features will remain the same, just make sure to pass `n_steps` \
+        argument to functions individually. Please use scheduling functions directly \
+        (e.g. `from optschedule import step_decay`). For more details refer to \
+        'Paradigm Shift' section in the documentation.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
 
         sequence = np.zeros(self.n_steps)
         sequence[0] = initial_value
